@@ -18,10 +18,18 @@ jobs:
       - run:
           name: Ejecutar Fastlane
           command: bundle exec fastlane $FASTLANE_LANE
+      - run:
+    	  name: Instalar dependencias con compatibilidad para Mac
+          command: |
+          gem install bundler
+          bundle install --jobs=4 --retry=3
+          bundle lock --add-platform arm64-darwin-22
+
       - store_artifacts:
           path: output
       - store_test_results:
           path: output/scan
+
 
 workflows:
   version: 2
