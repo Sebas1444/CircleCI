@@ -1,0 +1,97 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@1.2.0  # Usa el Orb de Ruby
+
+jobs:
+  build:
+    macos:
+      xcode: "15.0.0"  # Asegúrate de usar la versión que necesites
+    working_directory: /Users/distiller/project
+    environment:
+      FL_OUTPUT_DIR: output
+      FASTLANE_LANE: beta  # Cambia "test" a "beta" si es la lane correcta
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Ejecutar Fastlane
+          command: bundle exec fastlane $FASTLANE_LANE
+      - store_artifacts:
+          path: output
+      - store_test_results:
+          path: output/scan
+
+workflows:
+  version: 2
+  build_and_upload:
+    jobs:
+      - build
+
+
+
+
+
+#--------------2--------------#
+
+#version: 2.1
+
+#orbs:
+#  ruby: circleci/ruby@1.2.0
+
+#jobs:
+#  build:
+ #   macos:
+  #    xcode: "13.1.0"
+   # working_directory: /Users/distiller/project
+    #environment:
+     # FL_OUTPUT_DIR: output
+      #FASTLANE_LANE: test
+#    shell: /bin/bash --login -o pipefail
+ #   steps:
+  #    - checkout
+   #   - ruby/install-deps
+    #  - run:
+     #     name: fastlane
+      #    command: bundle exec fastlane $FASTLANE_LANE
+      #- store_artifacts:
+       #   path: output
+      #- store_test_results:
+       #   path: output/scan
+
+
+
+#--------------1.0--------------#
+
+
+
+#version: 2.1
+
+#jobs:
+ # build:
+  #  macos:
+   #   xcode: "15.0.0"  # Usa la versión de Xcode que necesites
+   # steps:
+    #  - checkout  # Clona el código desde GitHub
+      
+    #  - run:
+     #     name: Instalar dependencias
+      #    command: |
+       #     gem install bundler
+        #    bundle install
+         #   pod install  # Si usas CocoaPods
+
+#      - run:
+ #         name: Compilar y generar el .ipa
+  #        command: bundle exec fastlane beta
+
+   #   - run:
+    #      name: Subir a Firebase
+     #     command: bundle exec fastlane upload_firebase
+
+#workflows:
+ # version: 2
+ # build_and_upload:
+  #  jobs:
+   #   - build
